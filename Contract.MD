@@ -29,3 +29,4 @@ members.
 use a random number generator to decide the outcome.
 
 Shreya Basu shreyab4
+Elizabeth Zhan ezhan292

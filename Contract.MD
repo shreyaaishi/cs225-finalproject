@@ -6,7 +6,7 @@ we'll update the team Google Docs with what we need to do for the upcoming week,
 2. **Assistance** Each team member can be contacted through Discord. Outside
 of emergencies or other commitments, we can commit repsonding to texts within 24 hours.
 Shreya: 248-719-8290
-Drashti:
+Drashti: 847-840-6261
 Elle:
 3. **Respect** All decisions will be accepted by simple majority – while unanimous agreement is preferred,
 it is not required. Decisions documented in the group meeting document. By signing this document, each member 
@@ -30,3 +30,4 @@ use a random number generator to decide the outcome.
 
 Shreya Basu shreyab4
 Elizabeth Zhan ezhan292
+Drashti Sikligar dsikli2

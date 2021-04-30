@@ -1,5 +1,5 @@
 EXENAME = PAgraph
-OBJS = 
+OBJS = main.o readFromFile.o
 CXX = clang++
 CXXFLAGS = $(CS225) -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -pedantic
 LD = clang++

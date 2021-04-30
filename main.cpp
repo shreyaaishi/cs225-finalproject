@@ -9,30 +9,29 @@ vector<int> tolist;
 vector<int> fromlist;
 vector<int> uniquenodes;
 
-void createlists(vector<int> & v)
-{
-for(int i =0; i < v.length(); i++){
+void createlists(vector<int> & v){
+	for(int i =0; i < v.length(); i++){
 		if(i%2==0){
-	tolist.push_back(v[i]);
-}
-
-else{
-fromlist.push_back(v[i]);
-}
-}
+			tolist.push_back(v[i]);
+		}
+		
+		else{
+			fromlist.push_back(v[i]);
+		}
+	}
 }
 
 void return nodelist(vector<int> &v)
 {
 	for(int i =0; i < v.length(); i=i+2){
 		if(i == 0){
-		uniquenodes.push_back(v[i]);
-}
+			uniquenodes.push_back(v[i]);
+		}
 
-else if(v[i] != v[i-1]){
-uniquenodes.push_back(v[i]);
-}
-}
+		else if(v[i] != v[i-1]){
+			uniquenodes.push_back(v[i]);
+		}
+	}
 }
 
 

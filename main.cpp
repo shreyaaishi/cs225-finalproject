@@ -3,7 +3,7 @@
 #include<fstream>
 #include<string>
 #include <vector>
- 
+
 using namespace std;
 vector<int> tolist;
 vector<int> fromlist;

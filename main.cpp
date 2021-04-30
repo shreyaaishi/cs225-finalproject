@@ -3,7 +3,7 @@
 #include<fstream>
 #include<string>
 #include <vector>
- 
+
 using namespace std;
 vector<int> tolist;
 vector<int> fromlist;
@@ -25,6 +25,16 @@ void createlists(vector<int> & v)
         fromlist.push_back(v[i]);
         }
     }
+void createlists(vector<int> & v){
+	for(int i =0; i < v.length(); i++){
+		if(i%2==0){
+			tolist.push_back(v[i]);
+		}
+		
+		else{
+			fromlist.push_back(v[i]);
+		}
+	}
 }
 
 void return nodelist(vector<int> &v)
@@ -40,6 +50,15 @@ void return nodelist(vector<int> &v)
             uniquenodes.push_back(v[i]);
             }
     }
+	for(int i =0; i < v.length(); i=i+2){
+		if(i == 0){
+			uniquenodes.push_back(v[i]);
+		}
+
+		else if(v[i] != v[i-1]){
+			uniquenodes.push_back(v[i]);
+		}
+	}
 }
 
 

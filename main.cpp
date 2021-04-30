@@ -25,18 +25,27 @@ void createlists(const std::string & filename)
         return;
     }
     cout << "1" << endl;
-        while(!text.eof()){
-            while(i =! 10){
-            string a;
-            string b;
-            getline(text, a, '\t');
-            getline(text, b);
-            cout << a << b;
-            // fromlist.push_back(a);
-            // tolist.push_back(b);
-            ++i;
-        }
-    }
+    //     while(!text.eof()){
+    //         while(i =! 10){
+    //         string a;
+    //         string b;
+    //         getline(text, a, '\t');
+    //         getline(text, b);
+    //         cout << a << b;
+    //         // fromlist.push_back(a);
+    //         // tolist.push_back(b);
+    //         ++i;
+    //     }
+    // }
+    fromlist.push_back(10);
+    fromlist.push_back(11);
+    fromlist.push_back(12);
+    tolist.push_back(13);
+    tolist.push_back(14);
+    tolist.push_back(15);
+for(i = 0; i < fromlist.size(); i++){
+    cout << fromlist.at(i) << "";
+}
     return;
 }
     // while (i =! 10) {

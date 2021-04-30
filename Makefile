@@ -1,4 +1,4 @@
-EXENAME = PAgraph
+EXENAME = graph
 OBJS = main.o
 #OBJS = main.o readFromFile.o
 CXX = clang++
@@ -24,4 +24,4 @@ readFromFile.o: main.cpp
 # 	$(LD)   readFromFile.cpp $(LDFLAGS) -o test
 
 clean:
-	-rm -f *.o $(EXENAME) test
+	-rm -f *.o $(EXENAME)

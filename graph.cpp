@@ -25,16 +25,18 @@ void Graph::addEdge(int startVertex, int endVertex) {
     //Add vertices if needed
     insertVertex(startVertex);
     insertVertex(endVertex);
+
     //Calculate weight
-    int weight = 0;
+    int edgeWeight = 0;
+    std::cout<< startVertex << " " << graph[startVertex].size() << std::endl;
     if ((graph[startVertex].size() + graph[endVertex].size() - 2) <= 0) {
-       weight = -1;
+       edgeWeight = -1;
     } else {
-        weight = 1/(graph[startVertex].size() + graph[endVertex].size() - 2);
+        edgeWeight = 1/(graph[startVertex].size() + graph[endVertex].size() - 2);
     }
-    GraphEdge* graphEdge = new GraphEdge(startVertex, endVertex, weight);
-    //iterate through the list of start vertexes, checking if u = startVertex && v = endvertex || v = startVertex && u = endvertex
-    //if so, return
+    GraphEdge* graphEdge = new GraphEdge(startVertex, endVertex, edgeWeight);
+
+    //Iterate through edgeList and ensure duplicate edge isn't being added to the vertex
     for(unsigned i = 0; i < graph[startVertex].size(); i++){
         if(graph[startVertex].at(i)->u == startVertex && graph[startVertex].at(i)->v == endVertex) {
             return;
@@ -42,6 +44,13 @@ void Graph::addEdge(int startVertex, int endVertex) {
         if(graph[startVertex].at(i)->u == endVertex && graph[startVertex].at(i)->v == startVertex) {
             return;
         }
+    }
+    //Update edge weights
+    for (unsigned i = 0; i < graph[startVertex].size(); i++) {
+        graph[startVertex].at(i)->weight = edgeWeight;
+    }
+    for (unsigned i = 0; i < graph[endVertex].size(); i++) {
+        graph[endVertex].at(i)->weight = edgeWeight;
     }
     graph[startVertex].push_back(graphEdge);
     graph[endVertex].push_back(graphEdge);

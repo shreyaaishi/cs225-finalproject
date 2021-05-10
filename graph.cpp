@@ -56,9 +56,5 @@ void Graph::printGraph() {
 }
 
 void Graph::BFStraversal(int start){
-    /*std::vector<bool> visited;
-    for(int i = 0; i < graph.size(); i++){
-        visited[i] = false;
-    } */
 
 }

@@ -8,10 +8,11 @@
 
 int main() {
     
-    std::vector<std::string> res = file_to_vector("smallSample.txt");
+/*     std::vector<int> res = file_to_vector("PA.txt");
     for (unsigned i = 0; i < res.size(); i++) {
         std::cout << res[i] << std::endl;
-    }
-    Graph graph("smallSample.txt");
+    } */
+    Graph graph("PA.txt");
+    graph.printGraph();
     return 0;
 }

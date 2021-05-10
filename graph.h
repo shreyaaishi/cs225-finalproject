@@ -14,9 +14,9 @@ class Graph {
         //~Graph();
         void insertVertex(int key);
         void addEdge(int startVertex, int endVertex);
-        void createGraph(std::vector<std::string> edges);
+        void createGraph(std::vector<int> edges);
         void printGraph();
         void BFStraversal(int start);
     private:
-        std::map<int, std::vector<GraphEdge>> graph;
+        std::map<int, std::vector<GraphEdge*>> graph;
 };

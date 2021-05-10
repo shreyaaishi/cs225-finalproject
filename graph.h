@@ -9,14 +9,6 @@ class Graph {
 
         GraphEdge(int u, int v, int weight) : u(u), v(v), weight(weight){}
     };
-/*         struct KDTreeNode
-    {
-      Point<Dim> point;
-      KDTreeNode *left, *right;
-
-      KDTreeNode() : point(), left(NULL), right(NULL) {}
-      KDTreeNode(const Point<Dim> &point) : point(point), left(NULL), right(NULL) {}
-    }; */
     public:
         Graph(const std::string & filename);
         //~Graph();

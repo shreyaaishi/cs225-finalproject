@@ -13,5 +13,5 @@ int main() {
         std::cout << res[i] << std::endl;
     }
     Graph graph("smallSample.txt");
-	
+    return 0;
 }

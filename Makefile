@@ -26,5 +26,11 @@ $(EXENAME): output_msg $(OBJS)
 readFromFile.o: readFromFile.cpp
 	$(CXX) $(CXXFLAGS) readFromFile.cpp
 
+graph.o: graph.cpp graph.h
+	$(CXX) $(CXXFLAGS) graph.cpp
+
+test: output_msg catch/catchmain.cpp tests/tests.cpp readFromFile.cpp graph.cpp
+	$(LD) catch/catchmain.cpp tests/tests.cpp readFromFile.cpp graph.cpp $(LDFLAGS) -o test
+
 clean:
 	-rm -f *.o $(EXENAME) test

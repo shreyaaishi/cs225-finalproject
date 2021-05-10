@@ -12,4 +12,4 @@ std::string file_to_string(const std::string & filename);
  * @param filename The file to read from
  * @return a vector containing filename's contents
  */
-std::vector<std::string> file_to_vector(const std::string & filename);
+std::vector<int> file_to_vector(const std::string & filename);

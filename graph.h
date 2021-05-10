@@ -16,7 +16,17 @@ class Graph {
         void addEdge(int startVertex, int endVertex);
         void createGraph(std::vector<int> edges);
         void printGraph();
-        void BFStraversal(int start);
+        void BFS(int start);
+        
     private:
+        std::map<int, bool> visited;
+        void BFStraversal(int start);
         std::map<int, std::vector<GraphEdge*>> graph;
 };
+// class BFS{
+//     public:
+//     void BFStraversal(int start);
+//     std::queue<int> queue;
+//     int current;
+//     private:
+// }

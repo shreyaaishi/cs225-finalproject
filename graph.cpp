@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include <vector>
 #include <map>
+#include <queue>
 
 #include "graph.h"
 #include "readFromFile.hpp"
@@ -28,11 +29,11 @@ void Graph::addEdge(int startVertex, int endVertex) {
 
     //Calculate weight
     int edgeWeight = 0;
-    std::cout<< startVertex << " " << graph[startVertex].size() << std::endl;
-    if ((graph[startVertex].size() + graph[endVertex].size() - 2) <= 0) {
+    //std::cout<< startVertex << " " << graph[startVertex].size() << std::endl;
+    if ((graph[startVertex].size() + graph[endVertex].size()) <= 0) {
        edgeWeight = -1;
     } else {
-        edgeWeight = 1/(graph[startVertex].size() + graph[endVertex].size() - 2);
+        edgeWeight = 1/(graph[startVertex].size() + graph[endVertex].size());
     }
     GraphEdge* graphEdge = new GraphEdge(startVertex, endVertex, edgeWeight);
 
@@ -54,6 +55,7 @@ void Graph::addEdge(int startVertex, int endVertex) {
     }
     graph[startVertex].push_back(graphEdge);
     graph[endVertex].push_back(graphEdge);
+
 }
 
 void Graph::createGraph(std::vector<int> edges) {
@@ -73,6 +75,39 @@ void Graph::printGraph() {
     }
 }
 
-void Graph::BFStraversal(int start){
- start =0;
+void Graph::BFSUtil(int start){ 
+    std::queue<int> queue;
+    queue.push(start);
+    visited[start] = true;
+
+    while(!(queue.empty())){
+        int temp = queue.front();
+        std::cout << temp << std::endl;
+        queue.pop();
+        for(unsigned i =0; i< graph[temp].size(); i++ ) {
+            int one = graph[temp].at(i)->u;
+            int two = graph[temp].at(i)->v;
+            if (one != temp && !visited[one]) {
+                visited[one] = true;
+                queue.push(one);
+            }
+            if (two != temp && !visited[two]) {
+                visited[two] = true;
+                queue.push(two);
+            }       
+        }
+        
+    }
+}
+
+void Graph::BFS() {
+    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph) {
+        visited[key_val.first] = false;
+    }
+    for (std::pair<const int, bool> & key_val: visited) {
+        if(!visited[key_val.first]) {
+            std::cout<<"Called BFStraversal helper" << std::endl;
+            BFSUtil(key_val.first);
+        }
+    }
 }

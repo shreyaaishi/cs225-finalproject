@@ -5,9 +5,10 @@
 class Graph {
     private:
     struct GraphEdge {
-        int u, v, weight;
+        int u, v;
+        double weight;
 
-        GraphEdge(int u, int v, int weight) : u(u), v(v), weight(weight){}
+        GraphEdge(int u, int v, double weight) : u(u), v(v), weight(weight){}
     };
     public:
         Graph(const std::string & filename);

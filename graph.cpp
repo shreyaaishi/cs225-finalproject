@@ -12,8 +12,6 @@
 Graph::Graph(const std::string & filename) {
     std::vector<int> result = file_to_vector(filename);
     createGraph(result);
-    std::cout<<"object created successfully" << std::endl;
-    
 }
 void Graph::insertVertex(int key) {
     // Only add vertex if it's not already a part of the graph
@@ -23,21 +21,30 @@ void Graph::insertVertex(int key) {
     }
 }
 void Graph::addEdge(int startVertex, int endVertex) {
-    //Add vertices if needed
+    // Prevent self-cycles from being created
+    if (startVertex == endVertex) {
+        return;
+    }
+    // Add vertices to graph
     insertVertex(startVertex);
     insertVertex(endVertex);
 
-    //Calculate weight
-    int edgeWeight = 0;
-    //std::cout<< startVertex << " " << graph[startVertex].size() << std::endl;
-    if ((graph[startVertex].size() + graph[endVertex].size()) <= 0) {
-       edgeWeight = -1;
-    } else {
-        edgeWeight = 1/(graph[startVertex].size() + graph[endVertex].size());
+    // Calculate edge weight based on the node with the highest number of adjacent nodes
+    // If this is the first connection for both nodes, it will have automatically 
+    // the highest possible edge weight of 2
+    double edgeWeight = 2;
+    double uTotalEdges = (double) graph[startVertex].size();
+    double vTotalEdges = (double) graph[endVertex].size();
+    if (uTotalEdges >= vTotalEdges && uTotalEdges > 0) {
+        edgeWeight = 1/uTotalEdges;
+    }
+    if (vTotalEdges > uTotalEdges && vTotalEdges > 0) {
+        edgeWeight = 1/vTotalEdges;
     }
     GraphEdge* graphEdge = new GraphEdge(startVertex, endVertex, edgeWeight);
 
-    //Iterate through edgeList and ensure duplicate edge isn't being added to the vertex
+    // Prevent multi-edges from occuring by iterating through the adjacency list of 
+    // one of the vertices
     for(unsigned i = 0; i < graph[startVertex].size(); i++){
         if(graph[startVertex].at(i)->u == startVertex && graph[startVertex].at(i)->v == endVertex) {
             return;
@@ -46,16 +53,17 @@ void Graph::addEdge(int startVertex, int endVertex) {
             return;
         }
     }
-    //Update edge weights
+
+    // Update edge weights for all adjacent edges of each vertex
     for (unsigned i = 0; i < graph[startVertex].size(); i++) {
         graph[startVertex].at(i)->weight = edgeWeight;
     }
     for (unsigned i = 0; i < graph[endVertex].size(); i++) {
         graph[endVertex].at(i)->weight = edgeWeight;
     }
+    // Add the newly created edge to the corresponding adjacency list of each vertex
     graph[startVertex].push_back(graphEdge);
     graph[endVertex].push_back(graphEdge);
-
 }
 
 void Graph::createGraph(std::vector<int> edges) {
@@ -75,6 +83,17 @@ void Graph::printGraph() {
     }
 }
 
+void Graph::BFS() {
+    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph) {
+        visited[key_val.first] = false;
+    }
+    for (std::pair<const int, bool> & key_val: visited) {
+        if(!visited[key_val.first]) {
+            BFSUtil(key_val.first);
+        }
+    }
+}
+
 void Graph::BFSUtil(int start){ 
     std::queue<int> queue;
     queue.push(start);
@@ -82,7 +101,7 @@ void Graph::BFSUtil(int start){
 
     while(!(queue.empty())){
         int temp = queue.front();
-        std::cout << temp << std::endl;
+        //std::cout << temp << std::endl;
         queue.pop();
         for(unsigned i =0; i< graph[temp].size(); i++ ) {
             int one = graph[temp].at(i)->u;
@@ -97,17 +116,5 @@ void Graph::BFSUtil(int start){
             }       
         }
         
-    }
-}
-
-void Graph::BFS() {
-    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph) {
-        visited[key_val.first] = false;
-    }
-    for (std::pair<const int, bool> & key_val: visited) {
-        if(!visited[key_val.first]) {
-            std::cout<<"Called BFStraversal helper" << std::endl;
-            BFSUtil(key_val.first);
-        }
     }
 }

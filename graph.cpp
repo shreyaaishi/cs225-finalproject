@@ -13,9 +13,17 @@ Graph::Graph(const std::string & filename) {
     std::vector<int> result = file_to_vector(filename);
     createGraph(result);
 }
+
+void Graph::createGraph(std::vector<int> edges) {
+    for(unsigned i = 0; i < edges.size()-1; i += 2) {
+        addEdge(edges[i], edges[i+1]);
+        
+    }
+}
+
 void Graph::insertVertex(int key) {
     // Only add vertex if it's not already a part of the graph
-    std::map<int, std::vector<GraphEdge*>>::iterator it = graph.find(key);
+    std::map<int, std::vector<GraphEdge>>::iterator it = graph.find(key);
     if(it == graph.end()) {
         graph[key] = {};
     }
@@ -41,50 +49,55 @@ void Graph::addEdge(int startVertex, int endVertex) {
     if (vTotalEdges > uTotalEdges && vTotalEdges > 0) {
         edgeWeight = 1/vTotalEdges;
     }
-    GraphEdge* graphEdge = new GraphEdge(startVertex, endVertex, edgeWeight);
+    GraphEdge graphEdge(startVertex, endVertex, edgeWeight);
 
     // Prevent multi-edges from occuring by iterating through the adjacency list of 
     // one of the vertices
     for(unsigned i = 0; i < graph[startVertex].size(); i++){
-        if(graph[startVertex].at(i)->u == startVertex && graph[startVertex].at(i)->v == endVertex) {
+        if(graph[startVertex].at(i).u == startVertex && graph[startVertex].at(i).v == endVertex) {
             return;
         }
-        if(graph[startVertex].at(i)->u == endVertex && graph[startVertex].at(i)->v == startVertex) {
+        if(graph[startVertex].at(i).u == endVertex && graph[startVertex].at(i).v == startVertex) {
             return;
         }
     }
 
     // Update edge weights for all adjacent edges of each vertex
     for (unsigned i = 0; i < graph[startVertex].size(); i++) {
-        graph[startVertex].at(i)->weight = edgeWeight;
+        graph[startVertex].at(i).weight = edgeWeight;
     }
     for (unsigned i = 0; i < graph[endVertex].size(); i++) {
-        graph[endVertex].at(i)->weight = edgeWeight;
+        graph[endVertex].at(i).weight = edgeWeight;
     }
     // Add the newly created edge to the corresponding adjacency list of each vertex
     graph[startVertex].push_back(graphEdge);
     graph[endVertex].push_back(graphEdge);
 }
 
-void Graph::createGraph(std::vector<int> edges) {
-    for(unsigned i = 0; i < edges.size()-1; i += 2) {
-        addEdge(edges[i], edges[i+1]);
-        
+std::vector<Graph::GraphEdge> Graph::getIncidentEdges(int key) {
+    return graph[key];
+}
+
+std::vector<int> Graph::getVertexList() {
+    std::vector<int> vertexList;
+    for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
+        vertexList.push_back(key_val.first);
     }
+    return vertexList;
 }
 
 void Graph::printGraph() {
-    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph){
+    for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph){
         std::cout << "Vertex: " << key_val.first << std::endl;
         std::cout << " U " << " V " << " weight " << std::endl; 
         for(unsigned i = 0; i<key_val.second.size(); i++) {
-            std::cout << key_val.second[i]->u << " " << key_val.second[i]->v << " " <<key_val.second[i]->weight << std::endl;
+            std::cout << key_val.second[i].u << " " << key_val.second[i].v << " " <<key_val.second[i].weight << std::endl;
         }
     }
 }
 
-void Graph::BFS() {
-    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph) {
+std::vector<int> Graph::BFS() {
+    for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
         visited[key_val.first] = false;
     }
     for (std::pair<const int, bool> & key_val: visited) {
@@ -92,6 +105,7 @@ void Graph::BFS() {
             BFSUtil(key_val.first);
         }
     }
+    return BFSTraversal;
 }
 
 void Graph::BFSUtil(int start){ 
@@ -101,11 +115,11 @@ void Graph::BFSUtil(int start){
 
     while(!(queue.empty())){
         int temp = queue.front();
-        //std::cout << temp << std::endl;
+        BFSTraversal.push_back(temp);
         queue.pop();
         for(unsigned i =0; i< graph[temp].size(); i++ ) {
-            int one = graph[temp].at(i)->u;
-            int two = graph[temp].at(i)->v;
+            int one = graph[temp].at(i).u;
+            int two = graph[temp].at(i).v;
             if (one != temp && !visited[one]) {
                 visited[one] = true;
                 queue.push(one);

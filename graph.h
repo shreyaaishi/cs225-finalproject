@@ -12,15 +12,17 @@ class Graph {
     };
     public:
         Graph(const std::string & filename);
-        //~Graph();
         void insertVertex(int key);
         void addEdge(int startVertex, int endVertex);
-        void createGraph(std::vector<int> edges);
+        std::vector<GraphEdge> getIncidentEdges(int key);
+        std::vector<int> getVertexList();
         void printGraph();
-        void BFS();
+        std::vector<int> BFS();
         
     private:
         std::map<int, bool> visited;
-        std::map<int, std::vector<GraphEdge*>> graph;
+        std::map<int, std::vector<GraphEdge>> graph;
+        std::vector<int> BFSTraversal;
+        void createGraph(std::vector<int> edges);
         void BFSUtil(int start);
 };

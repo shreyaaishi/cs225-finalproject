@@ -13,6 +13,6 @@ int main() {
         std::cout << res[i] << std::endl;
     } */
     Graph graph("PA.txt");
-    graph.BFS(0);
+    graph.BFS();
     return 0;
 }

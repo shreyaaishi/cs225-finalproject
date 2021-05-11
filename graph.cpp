@@ -75,7 +75,7 @@ void Graph::printGraph() {
     }
 }
 
-void Graph::BFStraversal(int start){ 
+void Graph::BFSUtil(int start){ 
     std::queue<int> queue;
     queue.push(start);
     visited[start] = true;
@@ -83,7 +83,6 @@ void Graph::BFStraversal(int start){
     while(!(queue.empty())){
         int temp = queue.front();
         std::cout << temp << std::endl;
-        //int tempu = temp.u;
         queue.pop();
         for(unsigned i =0; i< graph[temp].size(); i++ ) {
             int one = graph[temp].at(i)->u;
@@ -100,14 +99,15 @@ void Graph::BFStraversal(int start){
         
     }
 }
-void Graph::BFS(int start) {
-    for(std::pair<const int, std::vector<GraphEdge*>> & key_val : graph){
+
+void Graph::BFS() {
+    for (std::pair<const int, std::vector<GraphEdge*>> & key_val : graph) {
         visited[key_val.first] = false;
     }
-    for(std::pair<const int, std::vector<GraphEdge*>> & key_val : visited){
-        if(visited[key_val.first == false]) {
+    for (std::pair<const int, bool> & key_val: visited) {
+        if(!visited[key_val.first]) {
             std::cout<<"Called BFStraversal helper" << std::endl;
-            BFStraversal(key_val.first);
+            BFSUtil(key_val.first);
         }
     }
 }

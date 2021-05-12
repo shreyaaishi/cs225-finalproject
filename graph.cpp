@@ -61,14 +61,6 @@ void Graph::addEdge(int startVertex, int endVertex) {
             return;
         }
     }
-
-/*     // Update edge weights for all adjacent edges of each vertex
-    for (unsigned i = 0; i < graph[startVertex].size(); i++) {
-        graph[startVertex].at(i).weight = edgeWeight;
-    }
-    for (unsigned i = 0; i < graph[endVertex].size(); i++) {
-        graph[endVertex].at(i).weight = edgeWeight;
-    } */
     // Add the newly created edge to the corresponding adjacency list of each vertex
     graph[startVertex].push_back(graphEdge);
     graph[endVertex].push_back(graphEdge);
@@ -146,9 +138,7 @@ void Graph::colorGraph() {
     std::unordered_map<int, int> colorAssignment;
     unsigned i=1;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
-        //std::cout<<i<<std::endl;
-        if (i!= graph.size()) {
-            //std::cout<<"entered"<<std::endl;
+        if (i != graph.size()) {
             colorAssignment[key_val.first] = -1;
             i++;
             continue;
@@ -157,29 +147,31 @@ void Graph::colorGraph() {
     }
     std::vector<bool> available;
     for (unsigned i = 0; i < graph.size(); i++) {
-        available.push_back(false);
+        available.push_back(true);
     }
-/*     for (unsigned i = 1; i<colorAssignment.size(); i++) {
-        // Process all adjacent vertices and flag their colors as unavailable
-        std::vector<int> adjList = getAdjacentVertices(i);
-        for (unsigned j = 0; j < adjList.size(); j++) {
-            if (colorAssignment[j] != -1) {
-                available[colorAssignment[j]] = true;
+    for (std::pair<const int, int> & key_val : colorAssignment) {
+        if(key_val.second != -1) {continue;}
+        std::vector<GraphEdge> edgeList = graph[key_val.first];
+         std::map<int, double> adjList = getAdjacencyList(key_val.first);
+        for (std::pair<const int, double> & adjVertex : adjList) {
+            if(colorAssignment[adjVertex.first] != -1) {
+                available[colorAssignment[adjVertex.first]] = false;
             }
         }
-        unsigned toAssign;
-        for (toAssign = 0; toAssign < available.size(); i++) {
-            if (available[toAssign] == false) {
+        int colorIndex = 0;
+        while(colorIndex != (int) available.size()) {
+            if(available[colorIndex]) {
                 break;
             }
+            colorIndex++;
         }
-        colorAssignment[i] = toAssign;
-        for (unsigned j = 0; j < adjList.size(); j++) {
-            if (colorAssignment[j] != -1) {
-                available[colorAssignment[j]] = false;
+        colorAssignment[key_val.first] = colorIndex;
+        for (std::pair<const int, double> & adjVertex : adjList) {
+            if(colorAssignment[adjVertex.first] != -1) {
+                available[colorAssignment[adjVertex.first]] = true;
             }
-        }  
-    } */
+        }
+    }
     // print the result
     for (std::pair<const int, int> & key_val : colorAssignment) {
         std::cout<< "Vertex " << key_val.first << " --> Color " 
@@ -187,7 +179,7 @@ void Graph::colorGraph() {
     }
 }
 
-void Graph::dijkstra(int startNode, int endNode){
+/* void Graph::dijkstra(int startNode, int endNode){
     std::unordered_map<int, double> distance;
     unsigned i=1;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
@@ -221,3 +213,4 @@ void Graph::dijkstra(int startNode, int endNode){
 	// Put the current node into the visited set
 }
 
+ */

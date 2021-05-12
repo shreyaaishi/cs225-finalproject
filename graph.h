@@ -21,7 +21,7 @@ class Graph {
         std::vector<int> getVertexList();
         void printGraph();
         std::vector<int> BFS();
-        void colorGraph();
+        std::unordered_map<int, int> colorGraph();
         std::vector<int> dijkstra(int startNode, int endNode);
         
     private:

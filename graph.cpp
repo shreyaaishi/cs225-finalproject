@@ -135,30 +135,31 @@ void Graph::BFSUtil(int start){
     }
 }
 
-void Graph::colorGraph() {
+std::unordered_map<int, int> Graph::colorGraph() {
+    /* Intialize an unordered map to store the results of graph coloring in which
+     * each item represents a graph node and the its corresponding assigned color */ 
     std::unordered_map<int, int> colorAssignment;
-    unsigned i=1;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
-        if (i != graph.size()) {
-            colorAssignment[key_val.first] = -1;
-            i++;
-            continue;
-        }
-        colorAssignment[key_val.first] = 0;
+        colorAssignment[key_val.first] = -1;
     }
+    colorAssignment[graph.size()-1];
+    /* Initialize a vector of boolean to store whether a color is available or not. */
     std::vector<bool> available;
     for (unsigned i = 0; i < graph.size(); i++) {
         available.push_back(true);
     }
     for (std::pair<const int, int> & key_val : colorAssignment) {
+        /* If a node is already assigned a color, it does not need to be processed again */
         if(key_val.second != -1) {continue;}
-        std::vector<GraphEdge> edgeList = graph[key_val.first];
-         std::map<int, double> adjList = getAdjacencyList(key_val.first);
+        /* Iterate through its neighbors using the adjacency list and make note of any
+         * colors that have already been used and flag them as unavailable */
+        std::map<int, double> adjList = getAdjacencyList(key_val.first);
         for (std::pair<const int, double> & adjVertex : adjList) {
             if(colorAssignment[adjVertex.first] != -1) {
                 available[colorAssignment[adjVertex.first]] = false;
             }
         }
+        /* Iterate through the list assign the node the first available color*/
         int colorIndex = 0;
         while(colorIndex != (int) available.size()) {
             if(available[colorIndex]) {
@@ -166,6 +167,7 @@ void Graph::colorGraph() {
             }
             colorIndex++;
         }
+        /* Reset array to mark every color as available again for the next iteration */
         colorAssignment[key_val.first] = colorIndex;
         for (std::pair<const int, double> & adjVertex : adjList) {
             if(colorAssignment[adjVertex.first] != -1) {
@@ -173,30 +175,41 @@ void Graph::colorGraph() {
             }
         }
     }
-    // print the result
+    // Print the result
     for (std::pair<const int, int> & key_val : colorAssignment) {
         std::cout<< "Vertex " << key_val.first << " --> Color " 
             << key_val.second << std::endl;
     }
+    return colorAssignment;
 }
 
 std::vector<int> Graph::dijkstra(int startNode, int endNode){
     typedef std::pair<double, int> pairDef;
+    /* Intialize an unordered map representing distance from source node.
+     * Since none of the vertices have been explored yet, every node other than the 
+     * startNode has an unknown distance and set to a value of infinity instead. */
     std::unordered_map<int, double> distance;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
         distance[key_val.first] = INFINITY;
     }
-    std::map<int, int> previousNode;
-    previousNode[startNode] = -1;
     distance[startNode] = 0;
+    /* Initialize map storing the direct predecessor of each node */
+    std::map<int, int> previousNode;
+    /* Intialize a minHeap using the priority queue data structure included in the 
+     * standard library. Each item in the queue contains both the node and its
+     * corresponding tentative distance value. Intially includes only the sourceNode. */
     std::priority_queue <pairDef, std::vector<pairDef>, std::greater<pairDef>> pqueue;
     pqueue.push(std::make_pair(0, startNode));
 	while (pqueue.top().second != endNode){
-        //std::cout<< pqueue.top().second << std::endl;
+        /* Store and then remove node with the lowest tentative distance */
         int currNode = pqueue.top().second;
         pqueue.pop();
+        /* Iterate through the node's neigbors using its adjacency list*/
         std::map<int,double> adjList = getAdjacencyList(currNode);
         for (std::pair<const int, double> & key_val : adjList){
+            /* If a closer path to the neighbor is found, update its tentative distance
+             * value and place/update it as a an item on the priority queue. Also store the
+             * current node as the predecessor to its neighbor*/
             if(distance[currNode] + key_val.second < distance[key_val.first]) {
                 previousNode[key_val.first] = currNode;
                 distance[key_val.first] = key_val.second + distance[currNode];
@@ -204,6 +217,8 @@ std::vector<int> Graph::dijkstra(int startNode, int endNode){
             }
         }
     }
+    /* Backtracing with the previousNodes map, store the nodes that form the shortest 
+     * path from the startNode and endNode as items in a stack data structure. */
     std::stack<int> reversePath;
     reversePath.push(endNode);
     int prevNode = previousNode[endNode];
@@ -211,7 +226,9 @@ std::vector<int> Graph::dijkstra(int startNode, int endNode){
         reversePath.push(prevNode);
         prevNode = previousNode[prevNode];
     }
-    
+    reversePath.push(startNode);
+    /* Pop from the stack and push into a vector to get the shortest path in the 
+     * correct order */
     std::vector<int> path;
     while(!reversePath.empty()) {
         path.push_back(reversePath.top());

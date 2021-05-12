@@ -1,3 +1,4 @@
+#include <iostream>
 #include <map>
 #include <string>
 #include <vector>
@@ -65,12 +66,73 @@ TEST_CASE("BFS traversal reaches every node in a disconnected graph while mainta
     }
 }
 
-//graph coloring tests
-// no adjacent nodes have same color
+// Graph Coloring Tests
+TEST_CASE("No two adjacent nodes have the same color -- small dataset") {
+    Graph graph("tests/smallGraph3.txt");
+    std::unordered_map<int, int> result = graph.colorGraph();
+    std::unordered_map<int, int>::iterator it;
+    for (it = result.begin(); it != result.end(); it++) {
+        int key = it->first;
+        int color = it->second;
+        std::vector<int> resultkeys;
+        std::map<int, double> adjList = graph.getAdjacencyList(key);
+        for(std::pair<const int, double> & key_val : adjList) {
+            resultkeys.push_back(key_val.first);
+        }
+        for(int k = 0; k < (int) resultkeys.size(); k++){
+            int color2 = result[resultkeys[k]];
+            REQUIRE(color2 != color);
+        }
+    }
+}
 
+TEST_CASE("No two adjacent nodes have the same color -- large dataset") {
+    Graph graph("tests/largeGraph.txt");
+    std::unordered_map<int, int> result = graph.colorGraph();
+    std::unordered_map<int, int>::iterator it;
+    for (it = result.begin(); it != result.end(); it++) {
+        int key = it->first;
+        int color = it->second;
+        std::vector<int> resultkeys;
+        std::map<int, double> adjList = graph.getAdjacencyList(key);
+        for(std::pair<const int, double> & key_val : adjList) {
+            resultkeys.push_back(key_val.first);
+        }
+        for(int k = 0; k < (int) resultkeys.size(); k++){
+            int color2 = result[resultkeys[k]];
+            REQUIRE(color2 != color);
+        }
+    }
+}
 
-// dijkstra's tests
-// shortest path really is shortest path
-// prioritize inner paths
-// weights on the edges prioritizes a non-obvious path (EX: A->C has weight 10, A->B->C has total weight 8) 
+TEST_CASE("Graph produces all possible colors") {
+    Graph graph("tests/smallGraph4.txt");
+    std::vector<int> possibleColors;
+    std::unordered_map<int, int> result = graph.colorGraph();
+    std::unordered_map<int, int>::iterator it;
+    for (it = result.begin(); it != result.end(); it++) {
+        int color = it->second;
+        possibleColors.push_back(color);
+    }
+    std::vector<int> vertexList = graph.getVertexList();
+    REQUIRE(possibleColors.size() == vertexList.size());
+}
 
+// Dijkstra's Tests
+TEST_CASE("Dijkstra correctly calculates shortest path - small") {
+    std::vector<int> solution = {0,1,3,4,5,7};
+    Graph graph("tests/smallGraph3.txt");
+    std::vector<int> result = graph.dijkstra(0,7);
+    for (unsigned i = 0; i<result.size(); i++) {
+         REQUIRE(solution[i] == result[i]);
+    }
+}
+
+TEST_CASE("Dijkstra correctly calculates shortest path - large") {
+    std::vector<int> solution = {2, 7, 16, 18, 24, 23};
+    Graph graph("tests/largeGraph.txt");
+    std::vector<int> result = graph.dijkstra(2,23);
+    for (unsigned i = 0; i<result.size(); i++) {
+         REQUIRE(solution[i] == result[i]);
+    }
+}

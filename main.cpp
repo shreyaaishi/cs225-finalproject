@@ -10,30 +10,28 @@
 //#include "graph.h"
 
 int main() {
-    // Note: Include an extra line break after the list of edges
-    Graph graph("PA.txt");
-    //graph.printGraph();
-/*     std::vector<int> result = graph.dijkstra(2, 24);
-    for(unsigned i = 0; i < result.size(); i++) {
-        std::cout<<result[i] << std::endl;
-    } */
-/*     graph.printGraph();
-    std::vector<int> result = graph.BFS();
-    for (unsigned i = 0; i < result.size(); i++) {
-        std::cout<<result[i] << " ";
+    // Note: Include an extra line break in text after the listing edges
+    Graph graph1("roadNet-PA.txt");
+    graph1.printGraph();
+     std::vector<int> traversal1 = graph1.BFS();
+    for(unsigned i = 0; i < traversal1.size(); i++) {
+        std::cout<< traversal1[i] << " ";
     }
-    std::cout<<std::endl;
-    graph.colorGraph(); */
-/*     typedef std::pair<int, double> pairDef;
-    std::priority_queue <pairDef, std::vector<pairDef>, std::greater<pairDef>> pqueue;
-    pqueue.push(std::make_pair(0,0));
-    pqueue.push(std::make_pair(5,0.5));
-    pqueue.push(std::make_pair(90, 0.1));
-    pqueue.push(std::make_pair(1, 0.9));
-    while(!pqueue.empty()) {
-        std::cout<<pqueue.top().first << " " << pqueue.top().second << std::endl;
-        pqueue.pop();
-    } */
-    graph.colorGraph();
+    graph1.colorGraph();
+    std::vector<int> shortestPath1 = graph1.dijkstra(2, 7600);
+    for(unsigned i = 0; i < shortestPath1.size(); i++) {
+        std::cout<<shortestPath1[i]<<std::endl;
+    }
+    Graph graph2("PA.txt");
+    graph2.printGraph();
+     std::vector<int> traversal2 = graph2.BFS();
+    for(unsigned i = 0; i < traversal2.size(); i++) {
+        std::cout<< traversal2[i] << " ";
+    }
+    graph2.colorGraph();
+    std::vector<int> shortestPath2 = graph2.dijkstra(2, 24);
+    for(unsigned i = 0; i < shortestPath2.size(); i++) {
+        std::cout<<shortestPath2[i]<<std::endl;
+    }
     return 0;
 }

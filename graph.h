@@ -22,7 +22,7 @@ class Graph {
         void printGraph();
         std::vector<int> BFS();
         void colorGraph();
-        //void dijkstra(int startNode, int endNode);
+        std::vector<int> dijkstra(int startNode, int endNode);
         
     private:
         std::unordered_map<int, bool> visited;

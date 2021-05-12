@@ -6,6 +6,7 @@
 #include <queue>
 #include <set>
 #include <map>
+#include <stack>
 
 #include "graph.h"
 #include "readFromFile.hpp"
@@ -179,38 +180,43 @@ void Graph::colorGraph() {
     }
 }
 
-/* void Graph::dijkstra(int startNode, int endNode){
+std::vector<int> Graph::dijkstra(int startNode, int endNode){
+    typedef std::pair<double, int> pairDef;
     std::unordered_map<int, double> distance;
-    unsigned i=1;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
-        if (i!= graph.size()) {
-            distance[key_val.first] = INFINITY;
-            i++;
-            continue;
-        }
-        distance[key_val.first] = 0;
+        distance[key_val.first] = INFINITY;
     }
-    std::set<int> visitedDij;
-    std::priority_queue <int, std::vector<int>, std::greater<int>> pqueue;
-
-	while(pqueue.top() != endNode){
-        int currNode = pqueue.top();
+    std::map<int, int> previousNode;
+    previousNode[startNode] = -1;
+    distance[startNode] = 0;
+    std::priority_queue <pairDef, std::vector<pairDef>, std::greater<pairDef>> pqueue;
+    pqueue.push(std::make_pair(0, startNode));
+	while (pqueue.top().second != endNode){
+        //std::cout<< pqueue.top().second << std::endl;
+        int currNode = pqueue.top().second;
+        pqueue.pop();
         std::map<int,double> adjList = getAdjacencyList(currNode);
         for (std::pair<const int, double> & key_val : adjList){
-            if(visitedDij.find(key_val.first) == visitedDij.end()){
-               visitedDij.insert(key_val.first);
-               pqueue.push(key_val.first);
-               distance[key_val.first] = distance[currNode] + key_val.second;
-               continue;
-            }
-            if(distance[key_val.first] > key_val.second) {
-                distance[key_val.first] = key_val.second;
+            if(distance[currNode] + key_val.second < distance[key_val.first]) {
+                previousNode[key_val.first] = currNode;
+                distance[key_val.first] = key_val.second + distance[currNode];
+                pqueue.push(std::make_pair(key_val.second, key_val.first));
             }
         }
     }
-    // Update the neighbor's tentative distance value if we found a lcoser path
-	// Put the neighbor into the priority queue
-	// Put the current node into the visited set
+    std::stack<int> reversePath;
+    reversePath.push(endNode);
+    int prevNode = previousNode[endNode];
+    while(prevNode != startNode) {
+        reversePath.push(prevNode);
+        prevNode = previousNode[prevNode];
+    }
+    
+    std::vector<int> path;
+    while(!reversePath.empty()) {
+        path.push_back(reversePath.top());
+        reversePath.pop();
+    }
+    
+    return path;
 }
-
- */

@@ -1,6 +1,9 @@
+#include <unordered_map>
 #include <map>
 #include <string>
 #include <vector>
+
+#pragma once
 
 class Graph {
     private:
@@ -14,14 +17,16 @@ class Graph {
         Graph(const std::string & filename);
         void insertVertex(int key);
         void addEdge(int startVertex, int endVertex);
-        std::vector<GraphEdge> getIncidentEdges(int key);
+        std::map<int, double> getAdjacencyList(int key);
         std::vector<int> getVertexList();
         void printGraph();
         std::vector<int> BFS();
+        void colorGraph();
+        void dijkstra(int startNode, int endNode);
         
     private:
-        std::map<int, bool> visited;
-        std::map<int, std::vector<GraphEdge>> graph;
+        std::unordered_map<int, bool> visited;
+        std::unordered_map<int, std::vector<GraphEdge>> graph;
         std::vector<int> BFSTraversal;
         void createGraph(std::vector<int> edges);
         void BFSUtil(int start);

@@ -13,7 +13,7 @@ TEST_CASE("All vertices added to graph") {
 
 //Test Cases Remaining:
 //No multi-edges added
-//No self-cycles added
+//No self-cycles added -- create graph tests
 //All edges added
 //No repeat vertices added
 
@@ -36,3 +36,14 @@ TEST_CASE("BFS traversal reaches every node in a disconnected graph while mainta
 }
 //BFS traversal reaches every edge for connected graph
 //BFS traversal reaches every edge for a disconnected graph
+//BFS traversal is correct order
+//Note: some edge case isn't being handled when the first node isn't zero
+
+
+// dijkstra's tests
+// shortest path really is shortest path
+// prioritize inner paths
+// weights on the edges prioritizes a non-obvious path (EX: A->C has weight 10, A->B->C has total weight 8) 
+
+//graph coloring tests
+// no adjacent nodes have same color

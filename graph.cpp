@@ -67,10 +67,15 @@ void Graph::addEdge(int startVertex, int endVertex) {
     graph[endVertex].push_back(graphEdge);
 }
 
+// Retrieves corresponding adjacency list of corresponding node represented by int key
 std::map<int,double> Graph::getAdjacencyList(int key) {
     std::map<int,double> adjacencyList;
     std::vector<GraphEdge> edgeList = graph[key];
+    // Iterate through edgeList for the node of interest
     for (unsigned i = 0; i < edgeList.size(); i++) {
+        // If the first node listed in the graphEdge object is node itself, it implies the other
+        // edge stored in the graphEdge object is the adjacent node. If not, then the first node 
+        // stored in the graphEdge object is in fact the adjacent node
         if (edgeList[i].u == key) {
             adjacencyList[edgeList[i].v] = edgeList[i].weight;
         } else {
@@ -80,6 +85,7 @@ std::map<int,double> Graph::getAdjacencyList(int key) {
     return adjacencyList;
 }
 
+// Retrieves a list of all the vertices that are part of the graph currently
 std::vector<int> Graph::getVertexList() {
     std::vector<int> vertexList;
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
@@ -88,6 +94,7 @@ std::vector<int> Graph::getVertexList() {
     return vertexList;
 }
 
+// Prints vertex and its adjacent edges by iterating through the map and the vector each node key is mapped to
 void Graph::printGraph() {
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph){
         std::cout << "Vertex: " << key_val.first << std::endl;
@@ -99,9 +106,12 @@ void Graph::printGraph() {
 }
 
 std::vector<int> Graph::BFS() {
+    // Intialize visited map that maps each node to a boolean that indicates whether or not a node has been visited
+    // Since none of the node of the graph have been visited yet, all of them will be marked as false
     for (std::pair<const int, std::vector<GraphEdge>> & key_val : graph) {
         visited[key_val.first] = false;
     }
+    // Iterate through graph and use the helper function Graph::BFSUtil() to perform a BFS traversal
     for (std::pair<const int, bool> & key_val: visited) {
         if(!visited[key_val.first]) {
             BFSUtil(key_val.first);
@@ -110,15 +120,22 @@ std::vector<int> Graph::BFS() {
     return BFSTraversal;
 }
 
-void Graph::BFSUtil(int start){ 
+// Helper function for Graph::BFS()
+void Graph::BFSUtil(int start){
+    // Initialize queue to keep track of which vertex of the graph needs to be processed next
     std::queue<int> queue;
+    // Insert starting vertex into queue and mark it as visited
     queue.push(start);
     visited[start] = true;
 
     while(!(queue.empty())){
+        // Store and then remove vertex whose neighbors will now be processed
         int temp = queue.front();
         BFSTraversal.push_back(temp);
         queue.pop();
+        // Process all neighbors of vertex that was just removed from the queue by 
+        // adding them to the queue and marking them as visited so they do not get
+        // repeatedly added to the queue
         for(unsigned i =0; i< graph[temp].size(); i++ ) {
             int one = graph[temp].at(i).u;
             int two = graph[temp].at(i).v;

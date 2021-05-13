@@ -10,7 +10,7 @@
 //#include "graph.h"
 
 int main() {
-    // Note: Include an extra line break in text after the listing edges
+    // Note: Include an extra line break in dataset textfile after listing the edges
     Graph graph1("roadNet-PA.txt");
     graph1.printGraph();
      std::vector<int> traversal1 = graph1.BFS();

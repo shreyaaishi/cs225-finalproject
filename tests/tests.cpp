@@ -6,6 +6,8 @@
 #include "../catch/catch.hpp"
 #include "../graph.h"
 
+//See README.MD for more details about test cases
+
 // Graph constructor tests
 TEST_CASE("All vertices added to graph only once - small") {
     Graph graph("tests/smallGraph1.txt");
